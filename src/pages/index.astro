@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE, formatDate, readingMinutes } from '../config';
+
+const all = await getCollection('posts', ({ data }) => !data.draft || import.meta.env.DEV);
+const posts = all.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<Base title="文章">
+  <section class="hero">
+    <h1>{SITE.title}</h1>
+    <p>{SITE.description}</p>
+  </section>
+
+  {
+    posts.length === 0 ? (
+      <p class="empty">还没有文章。在 src/content/posts/ 里新建一个 .md 文件即可。</p>
+    ) : (
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a class="post-item" href={`/posts/${post.id}/`}>
+              <h2>{post.data.title}</h2>
+              {post.data.description && <p>{post.data.description}</p>}
+              <div class="meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+                <span class="sep">·</span>
+                <span>{readingMinutes(post.body)} 分钟</span>
+                {post.data.tags.length > 0 && (
+                  <>
+                    <span class="sep">·</span>
+                    <span>{post.data.tags.join(' / ')}</span>
+                  </>
+                )}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Base>

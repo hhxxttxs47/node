@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+
+const stack = [
+  ['框架', 'Astro 5（静态输出）'],
+  ['样式', '手写 CSS，明暗双主题'],
+  ['内容', 'Markdown，src/content/posts/'],
+  ['托管', 'orkestr · 欧盟机房 · 自动 SSL'],
+];
+---
+
+<Base title="关于" description="关于这个博客和它的作者。">
+  <article class="post">
+    <header>
+      <h1>关于</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        这里是一个很安静的地方，用来记录技术、阅读和日常里值得写下来的东西。
+        不追热点，不写标题党，写完之后放一阵子再回头改。
+      </p>
+
+      <h2>技术栈</h2>
+      <table>
+        <tbody>
+          {stack.map(([k, v]) => (
+            <tr>
+              <th>{k}</th>
+              <td>{v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>联系方式</h2>
+      <p>
+        想聊点什么，可以通过 <a href="/rss.xml">RSS</a> 订阅，或者直接在仓库里开 issue。
+      </p>
+    </div>
+
+    <a class="back" href="/">← 返回首页</a>
+  </article>
+</Base>

@@ -1,0 +1,53 @@
+---
+import { SITE } from '../config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = SITE.description } = Astro.props;
+const siteTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · 记录与思考`;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到正文</a>
+    <div class="frame">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="dot" aria-hidden="true"></span>
+          <span>{SITE.title}</span>
+        </a>
+        <nav>
+          <a href="/" class:list={{ active: path === '/' }}>文章</a>
+          <a href="/about" class:list={{ active: path === '/about' }}>关于</a>
+          <a href="/rss.xml">RSS</a>
+        </nav>
+      </header>
+
+      <main id="main">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <p>© {new Date().getFullYear()} {SITE.author}</p>
+        <p class="muted">用 Astro 构建 · 托管于欧盟</p>
+      </footer>
+    </div>
+  </body>
+</html>
